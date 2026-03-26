@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
 import useSWR from 'swr'
 import { EmailAddress } from "@/lib/http-client"
-import { useSettings } from "@/store/use-settings"
+import { useSettings, useActiveSettings } from "@/store/use-settings"
 import { useConfigs } from "@/store/use-configs"
 
 export function EmailSwitcher() {
@@ -37,10 +37,8 @@ export function EmailSwitcher() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [addressToDelete, setAddressToDelete] = useState<EmailAddress | null>(null)
   const { mutate } = useSWR('/api/addresses')
-  const activeConfig = useConfigs(state => state.getActiveConfig())
+  const { apiBaseUrl, authToken } = useActiveSettings()
   const activeConfigId = useConfigs(state => state.activeConfigId)
-  const apiBaseUrl = activeConfig?.apiBaseUrl || null
-  const authToken = activeConfig?.authToken || null
 
   // 监听配置切换，重新加载对应配置的地址
   useEffect(() => {

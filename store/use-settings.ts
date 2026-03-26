@@ -53,3 +53,16 @@ export const useSettings = create<SettingsState>()(
     }
   )
 )
+
+// 便捷 Hook：反应式获取当前激活的设置
+export const useActiveSettings = () => {
+  const activeConfig = useConfigs(state => state.configs.find(c => c.id === state.activeConfigId))
+  const settings = useSettings()
+  
+  return {
+    apiBaseUrl: activeConfig?.apiBaseUrl ?? settings.apiBaseUrl,
+    authToken: activeConfig?.authToken ?? settings.authToken,
+    resendApiKey: activeConfig?.resendApiKey ?? settings.resendApiKey,
+    isConfigActive: !!activeConfig
+  }
+}

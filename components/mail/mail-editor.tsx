@@ -6,10 +6,11 @@ import { useState, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { Label } from '@/components/ui/label'
 import { Paperclip, Send } from 'lucide-react'
-import { useSettings } from "@/store/use-settings"
+import { useSettings, useActiveSettings } from "@/store/use-settings"
 import { useToast } from "@/hooks/use-toast"
 import 'react-quill/dist/quill.snow.css'
 import { useAddressStore } from "@/store/use-address"
+import { useConfigs } from "@/store/use-configs"
 
 // 动态导入 ReactQuill 以避免 SSR 问题
 const ReactQuill = dynamic(() => import('react-quill'), {
@@ -69,7 +70,7 @@ export default function MailEditor() {
   const [files, setFiles] = useState<File[]>([])
   const [sending, setSending] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const { resendApiKey } = useSettings()
+  const { resendApiKey } = useActiveSettings()
   const { toast } = useToast()
   const currentAddress = useAddressStore(state => state.currentAddress)
 
